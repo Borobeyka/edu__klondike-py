@@ -1,0 +1,25 @@
+{
+    "app":
+    {
+        "version": "0.1",
+        "width": 1000,
+        "height": 650,
+        "fps": 60
+    },
+    "color":
+    {
+        "red": "#e66247",
+        "black": "#181616",
+        "green": "#36944d",
+        "lightgreen": "#A5E3B5",
+        "darkgreen": "#1c542a",
+        "white": "#e3eaea",
+        "grey": "#afbab2"
+    },
+    "card":
+    {
+        "width": 80,
+        "height": 120,
+        "radius": 8
+    }
+}
