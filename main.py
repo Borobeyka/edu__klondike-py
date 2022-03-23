@@ -10,8 +10,6 @@ pygame.init()
 pygame.display.set_caption(f"Klondike {config['app']['version']}")
 clock = pygame.time.Clock()
 
-cards = []
-
 for i in range(4):
     for j in range(13):
         cards.append(Card(window, 0, 0, config["suits"][i], j))

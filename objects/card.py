@@ -11,6 +11,10 @@ class Card (Actions):
         self.suit = suit
         self.nominal = nominal
         self.is_visible = True
+        if self.suit == "heart" or self.suit == "diamond":
+            self.iconColor = config["color"]["red"]
+        else:
+            self.iconColor = config["color"]["black"]
         self.small_icon = pygame.transform.scale(cards_icon.get(suit),
             (config["card"]["icon"]["s_width"], config["card"]["icon"]["s_height"]))
         self.large_icon = pygame.transform.scale(cards_icon.get(suit),

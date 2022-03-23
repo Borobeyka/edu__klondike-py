@@ -65,3 +65,14 @@ class Stack(Actions):
                     if idx >= index:
                         heap.add_card(card)
                 self.cards.pop(index)
+        
+    def push_heap(self, heap):
+        for card in heap.cards:
+            card.x = self.x
+            card.y = self.y + self.count() * config["stack"]["offset"]
+
+    def push_card(self, card):
+        cards.pop(card)
+        card.x = self.x;
+        card.y = self.y + self.count() * config.stack.offset;
+        self.card.append(card)

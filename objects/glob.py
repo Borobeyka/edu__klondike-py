@@ -15,3 +15,4 @@ cards_icon = {
     "heart": pygame.image.load("./assets/heart.png"),
     "spade": pygame.image.load("./assets/spade.png"),
 }
+cards = []
