@@ -19,18 +19,13 @@ class Heap(Actions):
         self.cards.append(card)
 
     def return_prev_coords(self):
-        self.x = self.oldX
-        self.y = self.oldY
+        super().return_prev_coords()
 
         for idx, card in enumerate(self.cards):
             card.x = self.x
             card.y = self.y + idx * config["stack"]["offset"]
 
-    def saveOldCoords(self):
-        self.oldX = self.x
-        self.oldY = self.y
-
-    def updateCoords(self, x, y):
+    def update_coords(self, x, y):
         super().update_coords(x, y)
 
         for idx, card in enumerate(self.cards):

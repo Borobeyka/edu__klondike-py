@@ -32,7 +32,7 @@ class Card (Actions):
                 2, config["card"]["radius"])
 
             # nominal
-            text = card_nominal.render(str(self.nominal), True, config["color"]["red"])
+            text = card_nominal.render(config["nominal"][self.nominal], True, self.iconColor)
             surface.blit(text, (config["card"]["icon"]["offsetX"], config["card"]["icon"]["offsetY"]))
             
             # icons
@@ -58,11 +58,11 @@ class Card (Actions):
 
         self.surface.blit(surface, (self.x, self.y))
 
-    def is_in_area(self, *coords):
-        x, y = coords
+    def is_in_area(self, x, y):
         if (x > self.x and x < self.x + config["card"]["width"] and
             y > self.y and y < self.y + config["card"]["height"]):
-            # self.mouse_offset_x = abs(x - self.x)
-            # self.mouse_offset_y = abs(y - self.y)
             return True
         return False
+
+    def set_visible(self, status):
+        self.is_visible = status

@@ -27,19 +27,19 @@ class Stack(Actions):
             pygame.draw.rect(surface, config["color"]["lightgreen"],
                 (0, 0, config["card"]["width"], config["card"]["height"]),
                 2, config["card"]["radius"])
+            self.surface.blit(surface, (self.x, self.y))
 
         else:
             for card in self.cards:
                 card.show()
-
-        self.surface.blit(surface, (self.x, self.y))
     
     def is_in_area(self, x, y):
         if (x > self.x and x < self.x + config["card"]["width"] and
             y > self.y and y < self.y + config["card"]["height"] +
             (self.count() == 1 or 0 if self.count() == 0 else (self.count() - 1) * config["stack"]["offset"])):
-            # self.mouse_offset_x = abs(x - self.x)
-            # self.mouse_offset_y = abs(y - self.y)
+            self.mouse_offset_x = abs(x - self.x)
+            self.mouse_offset_y = abs(y - self.y)
+            print(self.mouse_offset_x, self.mouse_offset_y)
             return True
         return False
     
@@ -58,24 +58,28 @@ class Stack(Actions):
     def get_heap_on_focus(self, x, y):
         for card in self.cards[::-1]:
             if card.is_in_area(x, y) and card.is_visible:
-                heap = Heap(card.x, card.y)
+                heap = Heap(window, card.x, card.y)
+                heap.mouse_offset_x = self.mouse_offset_x
+                heap.mouse_offset_y = self.mouse_offset_y
                 index = self.cards.index(card)
 
                 for idx, card in enumerate(self.cards):
                     if idx >= index:
                         heap.add_card(card)
                 self.cards.pop(index)
+                return heap
         
     def push_heap(self, heap):
         for card in heap.cards:
             card.x = self.x
             card.y = self.y + self.count() * config["stack"]["offset"]
+            self.cards.append(card)
 
     def push_card(self, card):
-        cards.pop(card)
+        cards.remove(card)
         card.x = self.x;
-        card.y = self.y + self.count() * config.stack.offset;
-        self.card.append(card)
+        card.y = self.y + self.count() * config["stack"]["offset"];
+        self.cards.append(card)
 
     def add_card(self, card):
         if self.is_empty() and card.nominal != 12:

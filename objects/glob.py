@@ -16,3 +16,6 @@ cards_icon = {
     "spade": pygame.image.load("./assets/spade.png"),
 }
 cards = []
+stacks = []
+dragged_heap = None
+dragged_stack = None
