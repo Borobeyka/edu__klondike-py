@@ -1,6 +1,11 @@
 class Actions:
 
-    mouse_offset_x = mouse_offset_y = 0
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.mouse_offset_x = abs(x - self.x)
+        self.mouse_offset_y = abs(y - self.y)
 
-    def __init__(self):
-        pass
+    def update_coords(self, x, y):
+        self.x += x - self.x - self.mouse_offset_x
+        self.y += y - self.y - self.mouse_offset_y

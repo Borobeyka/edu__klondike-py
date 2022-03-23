@@ -7,8 +7,7 @@ class Card (Actions):
 
     def __init__(self, surface, x, y, suit, nominal):
         self.surface = surface
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
         self.suit = suit
         self.nominal = nominal
         self.is_visible = True
@@ -23,7 +22,7 @@ class Card (Actions):
             
             pygame.draw.rect(surface, config["color"]["white"],
                 (0, 0, config["card"]["width"], config["card"]["height"]),
-                border_radius=8)
+                border_radius=config["card"]["radius"])
             pygame.draw.rect(surface, config["color"]["black"],
                 (0, 0, config["card"]["width"], config["card"]["height"]),
                 2, config["card"]["radius"])
@@ -48,16 +47,18 @@ class Card (Actions):
             
             pygame.draw.rect(surface, config["color"]["grey"],
                 (0, 0, config["card"]["width"], config["card"]["height"]),
-                border_radius=8)
+                border_radius=config["card"]["radius"])
             pygame.draw.rect(surface, config["color"]["black"],
                 (0, 0, config["card"]["width"], config["card"]["height"]),
                 2, config["card"]["radius"])
 
         self.surface.blit(surface, (self.x, self.y))
 
-    def isInArea(self, *coords):
+    def is_in_area(self, *coords):
         x, y = coords
         if (x > self.x and x < self.x + config["card"]["width"] and
             y > self.y and y < self.y + config["card"]["height"]):
+            # self.mouse_offset_x = abs(x - self.x)
+            # self.mouse_offset_y = abs(y - self.y)
             return True
         return False
