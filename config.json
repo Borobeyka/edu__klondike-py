@@ -18,8 +18,19 @@
     },
     "card":
     {
-        "width": 80,
-        "height": 120,
-        "radius": 8
+        "width": 90,
+        "height": 130,
+        "radius": 8,
+        "icon":
+        {
+            "offsetX": 7,
+            "offsetY": 2,
+            "fontSize": 34,
+
+            "s_width": 22,
+            "s_height": 22,
+            "l_width": 64,
+            "l_height": 64
+        }
     }
 }
