@@ -1,8 +1,9 @@
 import pygame
 
 from objects.glob import *
+from objects.actions import *
 
-class Card:
+class Card (Actions):
 
     def __init__(self, surface, x, y, suit, nominal):
         self.surface = surface
@@ -10,34 +11,47 @@ class Card:
         self.y = y
         self.suit = suit
         self.nominal = nominal
+        self.is_visible = True
         self.small_icon = pygame.transform.scale(cards_icon.get(suit),
             (config["card"]["icon"]["s_width"], config["card"]["icon"]["s_height"]))
         self.large_icon = pygame.transform.scale(cards_icon.get(suit),
             (config["card"]["icon"]["l_width"], config["card"]["icon"]["l_height"]))
 
     def show(self):
-        surface = pygame.Surface((config["card"]["width"], config["card"]["height"]), pygame.SRCALPHA)
-        
-        pygame.draw.rect(surface, config["color"]["white"],
-            (0, 0, config["card"]["width"], config["card"]["height"]),
-            border_radius=8)
-        pygame.draw.rect(surface, config["color"]["black"],
-            (0, 0, config["card"]["width"], config["card"]["height"]),
-            2, config["card"]["radius"])
+        if self.is_visible:
+            surface = pygame.Surface((config["card"]["width"], config["card"]["height"]), pygame.SRCALPHA)
+            
+            pygame.draw.rect(surface, config["color"]["white"],
+                (0, 0, config["card"]["width"], config["card"]["height"]),
+                border_radius=8)
+            pygame.draw.rect(surface, config["color"]["black"],
+                (0, 0, config["card"]["width"], config["card"]["height"]),
+                2, config["card"]["radius"])
 
-        # nominal
-        text = card_nominal.render(str(self.nominal), True, config["color"]["red"])
-        surface.blit(text, (config["card"]["icon"]["offsetX"], config["card"]["icon"]["offsetY"]))
-        
-        # icons
-        surface.blit(self.small_icon, (
-            config["card"]["width"] - config["card"]["icon"]["s_width"] - config["card"]["icon"]["offsetX"],
-            config["card"]["icon"]["offsetY"] + 10
-        ))
-        surface.blit(self.large_icon, (
-            config["card"]["width"] / 2 - config["card"]["icon"]["l_width"] / 2,
-            config["card"]["icon"]["offsetY"] + 55
-        ))
+            # nominal
+            text = card_nominal.render(str(self.nominal), True, config["color"]["red"])
+            surface.blit(text, (config["card"]["icon"]["offsetX"], config["card"]["icon"]["offsetY"]))
+            
+            # icons
+            surface.blit(self.small_icon, (
+                config["card"]["width"] - config["card"]["icon"]["s_width"] - config["card"]["icon"]["offsetX"],
+                config["card"]["icon"]["offsetY"] + 10
+            ))
+            surface.blit(self.large_icon, (
+                config["card"]["width"] / 2 - config["card"]["icon"]["l_width"] / 2,
+                config["card"]["icon"]["offsetY"] + 55
+            ))
+
+            
+        else:
+            surface = pygame.Surface((config["card"]["width"], config["card"]["height"]), pygame.SRCALPHA)
+            
+            pygame.draw.rect(surface, config["color"]["grey"],
+                (0, 0, config["card"]["width"], config["card"]["height"]),
+                border_radius=8)
+            pygame.draw.rect(surface, config["color"]["black"],
+                (0, 0, config["card"]["width"], config["card"]["height"]),
+                2, config["card"]["radius"])
 
         self.surface.blit(surface, (self.x, self.y))
 

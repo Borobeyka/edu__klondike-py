@@ -12,18 +12,26 @@ clock = pygame.time.Clock()
 
 card = Card(window, 20, 20, config["suits"][2], config["nominal"][11])
 
-
+dragged_card = None
 
 while True:
     for event in pygame.event.get():
+        x, y = pygame.mouse.get_pos()
+
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
-        if event.type == pygame.MOUSEBUTTONUP:
-            x, y = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            
             if card.isInArea(x, y):
-                print(card.nominal)
-                #dragged_card = card
+                dragged_card = card
+        
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            dragged_card = None
+        
+    if dragged_card != None:
+        print("1")
 
     clock.tick(config["app"]["fps"])
 
