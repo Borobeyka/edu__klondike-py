@@ -76,3 +76,13 @@ class Stack(Actions):
         card.x = self.x;
         card.y = self.y + self.count() * config.stack.offset;
         self.card.append(card)
+
+    def add_card(self, card):
+        if self.is_empty() and card.nominal != 12:
+            return
+        if self.count() >= 1 and (self.get_last_card().icon_color == card.icon_color or
+            self.get_last_card().nominal - card.nominal != 1):
+            return
+        card.x = self.x
+        card.y = self.y + self.count() * config["stack"]["offset"]
+        self.cards.append(card)
