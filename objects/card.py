@@ -26,17 +26,17 @@ class Card:
             2, config["card"]["radius"])
 
         # nominal
-        text = card_nominal.render(self.nominal, True, config["color"]["red"])
+        text = card_nominal.render(str(self.nominal), True, config["color"]["red"])
         surface.blit(text, (config["card"]["icon"]["offsetX"], config["card"]["icon"]["offsetY"]))
         
         # icons
         surface.blit(self.small_icon, (
             config["card"]["width"] - config["card"]["icon"]["s_width"] - config["card"]["icon"]["offsetX"],
-            config["card"]["icon"]["offsetY"] + 5
+            config["card"]["icon"]["offsetY"] + 10
         ))
         surface.blit(self.large_icon, (
             config["card"]["width"] / 2 - config["card"]["icon"]["l_width"] / 2,
-            config["card"]["icon"]["offsetY"] + 45
+            config["card"]["icon"]["offsetY"] + 55
         ))
 
         self.surface.blit(surface, (self.x, self.y))
