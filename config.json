@@ -21,8 +21,18 @@
     "menu":
     {
         "width": 400,
-        "height": 300,
-        "shadow": 70
+        "height": 250,
+        "radius": 20,
+        "weight": 14,
+        "shadow": 70,
+        "fontSize": 26,
+        "button":
+        {
+            "multiplier": 0.8,
+            "height": 40,
+            "radius": 5,
+            "offset": 30
+        }
     },
     "card":
     {

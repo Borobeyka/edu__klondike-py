@@ -3,13 +3,11 @@ import sys
 
 from random import randint
 from objects.glob import *
-from objects.game.card import *
-from objects.game.heap import *
-from objects.game.stack import *
-from objects.game.storage import *
-from objects.game.deck import *
-
-from objects.menu.menu import *
+from objects.card import *
+from objects.heap import *
+from objects.stack import *
+from objects.storage import *
+from objects.deck import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -41,8 +39,6 @@ for i in range(len(cards)):
     deck.add_card(card)
     cards.remove(card)
 
-menu = Menu(window)
-
 while True:
     window.fill(config["color"]["green"])
     for event in pygame.event.get():
@@ -51,6 +47,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
+        
         
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for stack in stacks:
@@ -100,24 +97,19 @@ while True:
                 dragged_heap.return_prev_coords()
                 dragged_stack.push_heap(dragged_heap)
                 dragged_heap = None
-                dragged_stack = None
-        
-    
-
-    clock.tick(config["app"]["fps"])
+                dragged_stack = None          
+            
 
     for stack in stacks:
         stack.show()
-
     for storage in storages:
         storage.show()
-    
     deck.show()
 
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)
         dragged_heap.show()
 
-    menu.show()
 
+    clock.tick(config["app"]["fps"])
     pygame.display.update()

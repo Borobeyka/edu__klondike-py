@@ -1,8 +1,8 @@
 import pygame
 
 from objects.glob import *
-from objects.game.actions import *
-from objects.game.heap import *
+from objects.actions import *
+from objects.heap import *
 
 class Deck(Actions):
     def __init__(self, surface, x, y):
@@ -61,8 +61,6 @@ class Deck(Actions):
         else:
             self.cards[self.current_card_index].set_visible(True);
             self.cards[self.current_card_index].x -= config["card"]["width"] + config["stack"]["offset"];
-        
-        print(self.current_card_index)
 
     def get_heap_on_focus(self, x, y):
         card = self.cards[self.current_card_index]
