@@ -18,5 +18,6 @@ cards_icon = {
 cards = []
 stacks = []
 storages = []
+deck = None
 dragged_heap = None
 dragged_stack = None

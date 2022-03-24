@@ -7,6 +7,7 @@ from objects.card import *
 from objects.heap import *
 from objects.stack import *
 from objects.storage import *
+from objects.deck import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -32,6 +33,14 @@ for i in range(4):
     storages.append(Storage(window, x, 10))
     x += config["card"]["width"] + config["stack"]["offset"]
 
+deck = Deck(window, (config["card"]["width"] + config["stack"]["offset"]) * 6 + 10, 10);
+for i in range(len(cards)):
+    card = cards[randint(0, len(cards) - 1)]
+    deck.add_card(card)
+    cards.remove(card)
+
+print("Left %d" % len(cards))
+
 while True:
     window.fill(config["color"]["green"])
     for event in pygame.event.get():
@@ -55,8 +64,29 @@ while True:
                     if dragged_heap != None:
                         dragged_heap.save_old_coords()
                         dragged_stack = storage
+                    
+            if deck.is_in_area(x, y) and dragged_heap == None:
+                deck.pick_card()
+
+            # deck.cards.forEach((card, index) => {
+            #     if(card.isInArea() && deck.curCardIndex == index) {
+            #         draggedHeap = deck.getHeapOnFocus();
+            #         if(typeof draggedHeap != "undefined") {
+            #             draggedHeap.saveOldCoords();
+            #             draggedStack = deck;
+            #         }
+            #     }
+            # });
+
+            for idx, card in enumerate(deck.cards):
+                if card.is_in_area(x, y) and deck.current_card_index == idx:
+                    dragged_heap = deck.get_heap_on_focus(x, y)
+                    if dragged_heap != None:
+                        dragged_heap.save_old_coords()
+                        dragged_stack = deck
+
         
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
 
             for stack in stacks:
                 if stack.is_in_area(x, y):
@@ -89,6 +119,8 @@ while True:
 
     for storage in storages:
         storage.show()
+    
+    deck.show()
 
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)
