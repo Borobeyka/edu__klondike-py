@@ -1,4 +1,6 @@
+from re import S
 import pygame
+import time
 import sys
 
 from random import randint
@@ -8,6 +10,7 @@ from objects.heap import *
 from objects.stack import *
 from objects.storage import *
 from objects.deck import *
+from objects.bar import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -18,7 +21,7 @@ for i in range(4):
         cards.append(Card(window, 0, 0, config["suits"][i], j))
 x = 10
 for i in range(7):
-    stacks.append(Stack(window, x, 170))
+    stacks.append(Stack(window, x, config["bar"]["height"] + 170))
     for j in range(i + 1):
         if (i + 1) - j == 1:
             stacks[i].push_card(cards[randint(0, len(cards) - 1)])
@@ -30,14 +33,15 @@ for i in range(7):
 
 x = 10
 for i in range(4):
-    storages.append(Storage(window, x, 10))
+    storages.append(Storage(window, x, config["bar"]["height"] + 10))
     x += config["card"]["width"] + config["stack"]["offset"]
 
-deck = Deck(window, (config["card"]["width"] + config["stack"]["offset"]) * 6 + 10, 10);
+deck = Deck(window, (config["card"]["width"] + config["stack"]["offset"]) * 6 + 10, config["bar"]["height"] + 10);
 for i in range(len(cards)):
     card = cards[randint(0, len(cards) - 1)]
     deck.add_card(card)
     cards.remove(card)
+bar = Bar(window)
 
 while True:
     window.fill(config["color"]["green"])
@@ -47,7 +51,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
-        
         
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for stack in stacks:
@@ -105,6 +108,7 @@ while True:
     for storage in storages:
         storage.show()
     deck.show()
+    bar.show()
 
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)
