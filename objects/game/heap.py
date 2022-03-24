@@ -1,5 +1,5 @@
 from objects.glob import *
-from objects.actions import *
+from objects.game.actions import *
 
 class Heap(Actions):
 

@@ -1,8 +1,8 @@
 import pygame
 
 from objects.glob import *
-from objects.actions import *
-from objects.heap import *
+from objects.game.actions import *
+from objects.game.heap import *
 
 class Stack(Actions):
 

@@ -18,6 +18,12 @@
         "white": "#e3eaea",
         "grey": "#afbab2"
     },
+    "menu":
+    {
+        "width": 400,
+        "height": 300,
+        "shadow": 70
+    },
     "card":
     {
         "width": 100,

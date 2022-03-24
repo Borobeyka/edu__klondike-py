@@ -3,11 +3,13 @@ import sys
 
 from random import randint
 from objects.glob import *
-from objects.card import *
-from objects.heap import *
-from objects.stack import *
-from objects.storage import *
-from objects.deck import *
+from objects.game.card import *
+from objects.game.heap import *
+from objects.game.stack import *
+from objects.game.storage import *
+from objects.game.deck import *
+
+from objects.menu.menu import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -39,7 +41,7 @@ for i in range(len(cards)):
     deck.add_card(card)
     cards.remove(card)
 
-print("Left %d" % len(cards))
+menu = Menu(window)
 
 while True:
     window.fill(config["color"]["green"])
@@ -67,16 +69,6 @@ while True:
                     
             if deck.is_in_area(x, y) and dragged_heap == None:
                 deck.pick_card()
-
-            # deck.cards.forEach((card, index) => {
-            #     if(card.isInArea() && deck.curCardIndex == index) {
-            #         draggedHeap = deck.getHeapOnFocus();
-            #         if(typeof draggedHeap != "undefined") {
-            #             draggedHeap.saveOldCoords();
-            #             draggedStack = deck;
-            #         }
-            #     }
-            # });
 
             for idx, card in enumerate(deck.cards):
                 if card.is_in_area(x, y) and deck.current_card_index == idx:
@@ -125,5 +117,7 @@ while True:
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)
         dragged_heap.show()
+
+    menu.show()
 
     pygame.display.update()

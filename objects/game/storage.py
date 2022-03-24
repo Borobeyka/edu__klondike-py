@@ -1,8 +1,8 @@
 import pygame
 
 from objects.glob import *
-from objects.actions import *
-from objects.heap import *
+from objects.game.actions import *
+from objects.game.heap import *
 
 class Storage(Actions):
     def __init__(self, surface, x, y):
@@ -51,7 +51,7 @@ class Storage(Actions):
     
     def get_heap_on_focus(self, x, y):
         card = self.get_last_card()
-        heap = Heap(window, card.x, card.y) # mb surface = card.surface ??
+        heap = Heap(self.surface, card.x, card.y)
         heap.mouse_offset_x = abs(x - card.x)
         heap.mouse_offset_y = abs(y - card.y)
         heap.add_card(card)
