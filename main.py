@@ -6,9 +6,10 @@ from objects.glob import *
 from objects.card import *
 from objects.heap import *
 from objects.stack import *
+from objects.storage import *
 
 pygame.init()
-pygame.display.set_caption(f"Klondike {config['app']['version']}")
+pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
 clock = pygame.time.Clock()
 
 for i in range(4):

@@ -7,8 +7,7 @@ from objects.heap import *
 class Stack(Actions):
 
     def __init__(self, surface, x, y):
-        self.surface = surface
-        super().__init__(x, y)
+        super().__init__(surface, x, y)
         self.cards = []
 
     def count(self):

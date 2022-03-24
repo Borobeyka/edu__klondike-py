@@ -1,6 +1,7 @@
 class Actions:
 
-    def __init__(self, x, y):
+    def __init__(self, surface, x, y):
+        self.surface = surface
         self.x = self.old_x = x
         self.y = self.old_y = y
         self.mouse_offset_x = 0

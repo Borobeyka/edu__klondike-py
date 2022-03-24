@@ -6,8 +6,7 @@ from objects.actions import *
 class Card (Actions):
 
     def __init__(self, surface, x, y, suit, nominal):
-        self.surface = surface
-        super().__init__(x, y)
+        super().__init__(surface, x, y)
         self.suit = suit
         self.nominal = nominal
         self.is_visible = True
