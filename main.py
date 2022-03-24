@@ -7,7 +7,6 @@ from objects.card import *
 from objects.heap import *
 from objects.stack import *
 
-
 pygame.init()
 pygame.display.set_caption(f"Klondike {config['app']['version']}")
 clock = pygame.time.Clock()
