@@ -20,19 +20,20 @@
     },
     "card":
     {
-        "width": 90,
-        "height": 130,
+        "width": 100,
+        "height": 140,
         "radius": 8,
         "icon":
         {
             "offsetX": 7,
-            "offsetY": 2,
+            "offsetY": 0,
             "fontSize": 34,
 
             "s_width": 24,
             "s_height": 24,
             "l_width": 64,
-            "l_height": 64
+            "l_height": 64,
+            "l_offset": 65
         }
     },
     "stack":

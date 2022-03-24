@@ -5,11 +5,10 @@ class Actions:
         self.y = self.old_y = y
         self.mouse_offset_x = 0
         self.mouse_offset_y = 0
-        #print(self.mouse_offset_x, self.mouse_offset_y)
 
     def update_coords(self, x, y):
-        self.x = x - self.x - self.mouse_offset_x
-        self.y = y - self.y - self.mouse_offset_y
+        self.x += x - self.x - self.mouse_offset_x
+        self.y += y - self.y - self.mouse_offset_y
 
     def return_prev_coords(self):
         self.x = self.old_x
