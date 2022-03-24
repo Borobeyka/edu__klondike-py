@@ -17,7 +17,7 @@ for i in range(4):
         cards.append(Card(window, 0, 0, config["suits"][i], j))
 x = 10
 for i in range(7):
-    stacks.append(Stack(window, x, 150))
+    stacks.append(Stack(window, x, 170))
     for j in range(i + 1):
         if (i + 1) - j == 1:
             stacks[i].push_card(cards[randint(0, len(cards) - 1)])
@@ -27,7 +27,10 @@ for i in range(7):
             stacks[i].push_card(card);
     x += config["card"]["width"] + config["stack"]["offset"]
 
-dragged_card = None
+x = 10
+for i in range(4):
+    storages.append(Storage(window, x, 10))
+    x += config["card"]["width"] + config["stack"]["offset"]
 
 while True:
     window.fill(config["color"]["green"])
@@ -45,6 +48,13 @@ while True:
                     if dragged_heap != None:
                         dragged_heap.save_old_coords()
                         dragged_stack = stack
+
+            for storage in storages:
+                if storage.is_in_area(x, y) and not storage.is_empty():
+                    dragged_heap = storage.get_heap_on_focus(x, y)
+                    if dragged_heap != None:
+                        dragged_heap.save_old_coords()
+                        dragged_stack = storage
         
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
 
@@ -56,6 +66,13 @@ while True:
                             dragged_stack.get_last_card().set_visible(True)
                         dragged_heap = None
 
+            for storage in storages:
+                if storage.is_in_area(x, y):
+                    if storage.is_can_stack(dragged_heap):
+                        storage.push_heap(dragged_heap)
+                        if dragged_stack.count() > 0:
+                            dragged_stack.get_last_card().set_visible(True)
+                        dragged_heap = None
 
             if dragged_heap != None:
                 dragged_heap.return_prev_coords()
@@ -69,6 +86,9 @@ while True:
 
     for stack in stacks:
         stack.show()
+
+    for storage in storages:
+        storage.show()
 
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)

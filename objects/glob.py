@@ -17,5 +17,6 @@ cards_icon = {
 }
 cards = []
 stacks = []
+storages = []
 dragged_heap = None
 dragged_stack = None

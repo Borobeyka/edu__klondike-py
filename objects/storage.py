@@ -52,6 +52,8 @@ class Storage(Actions):
     def get_heap_on_focus(self, x, y):
         card = self.get_last_card()
         heap = Heap(window, card.x, card.y) # mb surface = card.surface ??
+        heap.mouse_offset_x = abs(x - card.x)
+        heap.mouse_offset_y = abs(y - card.y)
         heap.add_card(card)
         self.cards.remove(card)
         return heap
