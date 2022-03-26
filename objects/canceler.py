@@ -19,11 +19,11 @@ class Canceler:
         
         if isinstance(self.stack, Stack) and self.stack.count() > 0 and isinstance(self.d_stack, Stack):
             bar.add_score(-5)
-        elif isinstance(self.stack, Deck) and isinstance(self.d_stack, Stack):
+        if isinstance(self.stack, Deck) and isinstance(self.d_stack, Stack):
             bar.add_score(-5)
-        elif (isinstance(self.stack, Stack) or isinstance(self.stack, Deck)) and isinstance(self.d_stack, Storage):
+        if (isinstance(self.stack, Stack) or isinstance(self.stack, Deck)) and isinstance(self.d_stack, Storage):
             bar.add_score(-10)
-        elif isinstance(self.stack, Deck) and isinstance(self.d_stack, Stack):
+        if isinstance(self.stack, Deck) and isinstance(self.d_stack, Stack):
             bar.add_score(15)
 
         if isinstance(self.stack, Deck):
@@ -35,3 +35,7 @@ class Canceler:
 
     def is_can_canceled(self):
         return self.is_can_cancel
+    
+    def reset(self):
+        self.stack = self.d_stack = self.heap = None
+        self.is_can_cancel = False

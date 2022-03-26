@@ -52,7 +52,7 @@ class Deck(Actions):
     
     def pick_card(self):
         if self.current_card_index == None:
-            self.current_card_index = 0;
+            self.current_card_index = 0
         else: ### ТУТ ОШИБОЧКА
             self.cards[self.current_card_index].x = self.x
             self.cards[self.current_card_index].set_visible(False)
@@ -79,12 +79,14 @@ class Deck(Actions):
         return heap
 
     def push_heap(self, heap, cancel = False):
-        if int(self.current_card_index or 0) + 1 > self.count() and not cancel:
+        if int(self.current_card_index or 0) + 1 > self.count() and cancel == False:
             self.current_card_index -= 1
-        heap.cards[0].set_visible(True);
-        heap.cards[0].x = self.x - config["card"]["width"] - config["stack"]["offset"]
-        heap.cards[0].y = self.y
-        self.cards.insert(self.current_card_index, heap.cards[0])
+            print("FDFOFJFO")
+        card = heap.cards[0]
+        card.set_visible(True);
+        card.x = self.x - config["card"]["width"] - config["stack"]["offset"]
+        card.y = self.y
+        self.cards.insert(self.current_card_index, card)
 
     def is_scrolled(self):
         if self.current_card_index == None:

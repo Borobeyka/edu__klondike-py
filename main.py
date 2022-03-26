@@ -77,6 +77,7 @@ while True:
                     
             if deck.is_in_area(x, y) and dragged_heap == None:
                 deck.pick_card()
+                canceler.reset()
 
                 # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
                 if deck.is_scrolled():
