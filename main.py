@@ -98,8 +98,9 @@ while True:
                         if dragged_stack.count() > 0:
                             dragged_stack.get_last_card().set_visible(True)
 
-                        # Открытие карты на стол +5
-                        if isinstance(dragged_stack, Stack) and dragged_stack.count() != 0:
+                        # Открытие карты на столе +5
+                        if (isinstance(dragged_stack, Stack) and dragged_stack.count() != 0
+                            and dragged_stack != stack):
                             bar.add_score(5)
 
                         # Перетаскивание карты из колоды на стол +5

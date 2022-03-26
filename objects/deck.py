@@ -53,7 +53,7 @@ class Deck(Actions):
     def pick_card(self):
         if self.current_card_index == None:
             self.current_card_index = 0;
-        else:
+        else: ### ТУТ ОШИБОЧКА
             self.cards[self.current_card_index].x = self.x
             self.cards[self.current_card_index].set_visible(False)
             self.current_card_index += 1
