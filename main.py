@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from random import randint
+from objects.canceler import Canceler
 from objects.glob import *
 from objects.card import *
 from objects.heap import *
@@ -9,6 +10,7 @@ from objects.stack import *
 from objects.storage import *
 from objects.deck import *
 from objects.bar import *
+from objects.canceler import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -40,17 +42,24 @@ for i in range(len(cards)):
     card = cards[randint(0, len(cards) - 1)]
     deck.add_card(card)
     cards.remove(card)
+
 bar = Bar(window)
+canceler = Canceler()
 
 while True:
     window.fill(config["color"]["green"])
     for event in pygame.event.get():
+        keys = pygame.key.get_pressed()
         x, y = pygame.mouse.get_pos()
 
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
-        
+
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_z and canceler.is_can_canceled():
+                canceler.return_last_move(bar)
+    
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for stack in stacks:
                 if stack.is_in_area(x, y) and not stack.is_empty():
@@ -72,7 +81,6 @@ while True:
                 # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
                 if deck.is_scrolled():
                     bar.add_score(-20)
-                    print("-20 за прокрутку")
 
             for idx, card in enumerate(deck.cards):
                 if card.is_in_area(x, y) and deck.current_card_index == idx:
@@ -83,14 +91,13 @@ while True:
 
         
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
-
             for stack in stacks:
                 if stack.is_in_area(x, y):
                     if stack.is_can_stack(dragged_heap):
                         stack.push_heap(dragged_heap)
                         if dragged_stack.count() > 0:
                             dragged_stack.get_last_card().set_visible(True)
-                        
+
                         # Открытие карты на стол +5
                         if isinstance(dragged_stack, Stack) and dragged_stack.count() != 0:
                             bar.add_score(5)
@@ -103,6 +110,7 @@ while True:
                         if isinstance(dragged_stack, Storage):
                             bar.add_score(-15)
                         
+                        canceler.save_last_move(dragged_stack, stack, dragged_heap)
                         dragged_heap = None
 
             for storage in storages:
@@ -116,6 +124,7 @@ while True:
                         if isinstance(dragged_stack, Stack) or isinstance(dragged_stack, Deck):
                             bar.add_score(10)
 
+                        canceler.save_last_move(dragged_stack, storage, dragged_heap)
                         dragged_heap = None
 
             if dragged_heap != None:

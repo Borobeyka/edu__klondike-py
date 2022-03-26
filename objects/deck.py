@@ -61,8 +61,8 @@ class Deck(Actions):
         if self.current_card_index >= self.count():
             self.current_card_index = None
         else:
-            self.cards[self.current_card_index].set_visible(True);
-            self.cards[self.current_card_index].x -= config["card"]["width"] + config["stack"]["offset"];
+            self.cards[self.current_card_index].set_visible(True)
+            self.cards[self.current_card_index].x -= config["card"]["width"] + config["stack"]["offset"]
 
     def get_heap_on_focus(self, x, y):
         card = self.cards[self.current_card_index]
@@ -78,9 +78,12 @@ class Deck(Actions):
             self.current_card_index -= 1
         return heap
 
-    def push_heap(self, heap):
-        if int(self.current_card_index or 0) + 1 > self.count():
+    def push_heap(self, heap, cancel = False):
+        if int(self.current_card_index or 0) + 1 > self.count() and not cancel:
             self.current_card_index -= 1
+        heap.cards[0].set_visible(True);
+        heap.cards[0].x = self.x - config["card"]["width"] - config["stack"]["offset"]
+        heap.cards[0].y = self.y
         self.cards.insert(self.current_card_index, heap.cards[0])
 
     def is_scrolled(self):
