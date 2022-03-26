@@ -2,8 +2,6 @@ import pygame
 import time
 import json
 
-from enum import Enum
-
 with open("config.json", encoding="utf-8") as file:
     config = json.loads(file.read())
 
@@ -22,5 +20,4 @@ storages = []
 deck = None
 dragged_heap = None
 dragged_stack = None
-score = 0
-timeStarted = time.time()
+time_started = time.time()

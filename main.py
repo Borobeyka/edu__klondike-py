@@ -1,6 +1,4 @@
-from re import S
 import pygame
-import time
 import sys
 
 from random import randint
@@ -15,6 +13,7 @@ from objects.bar import *
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
 clock = pygame.time.Clock()
+
 
 for i in range(4):
     for j in range(13):
@@ -70,6 +69,11 @@ while True:
             if deck.is_in_area(x, y) and dragged_heap == None:
                 deck.pick_card()
 
+                # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
+                if deck.is_scrolled():
+                    bar.add_score(-20)
+                    print("-20 за прокрутку")
+
             for idx, card in enumerate(deck.cards):
                 if card.is_in_area(x, y) and deck.current_card_index == idx:
                     dragged_heap = deck.get_heap_on_focus(x, y)
@@ -86,6 +90,19 @@ while True:
                         stack.push_heap(dragged_heap)
                         if dragged_stack.count() > 0:
                             dragged_stack.get_last_card().set_visible(True)
+                        
+                        # Открытие карты на стол +5
+                        if isinstance(dragged_stack, Stack) and dragged_stack.count() != 0:
+                            bar.add_score(5)
+
+                        # Перетаскивание карты из колоды на стол +5
+                        if isinstance(dragged_stack, Deck):
+                            bar.add_score(5)
+
+                        # Перетаскивание карты из дома на стол -15
+                        if isinstance(dragged_stack, Storage):
+                            bar.add_score(-15)
+                        
                         dragged_heap = None
 
             for storage in storages:
@@ -94,6 +111,11 @@ while True:
                         storage.push_heap(dragged_heap)
                         if dragged_stack.count() > 0:
                             dragged_stack.get_last_card().set_visible(True)
+
+                        # Перетаскивание карты со стола или колоды в дом +10
+                        if isinstance(dragged_stack, Stack) or isinstance(dragged_stack, Deck):
+                            bar.add_score(10)
+
                         dragged_heap = None
 
             if dragged_heap != None:

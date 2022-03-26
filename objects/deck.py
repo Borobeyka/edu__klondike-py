@@ -54,6 +54,8 @@ class Deck(Actions):
         if self.current_card_index == None:
             self.current_card_index = 0;
         else:
+            self.cards[self.current_card_index].x = self.x
+            self.cards[self.current_card_index].set_visible(False)
             self.current_card_index += 1
 
         if self.current_card_index >= self.count():
@@ -72,6 +74,8 @@ class Deck(Actions):
         self.cards.remove(card)
         if self.current_card_index == self.count():
             self.current_card_index += 1
+        else:
+            self.current_card_index -= 1
         return heap
 
     def push_heap(self, heap):
@@ -79,6 +83,11 @@ class Deck(Actions):
             self.current_card_index -= 1
         self.cards.insert(self.current_card_index, heap.cards[0])
 
+    def is_scrolled(self):
+        if self.current_card_index == None:
+            return True
+        else:
+            return False
     
     def get_last_card(self):
         return self.cards[-1]
