@@ -2,7 +2,7 @@ import pygame
 import sys
 
 from random import randint
-from objects.canceler import Canceler
+
 from objects.glob import *
 from objects.card import *
 from objects.heap import *
@@ -56,7 +56,7 @@ while True:
             pygame.quit()
             sys.exit(0)
 
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z and canceler.is_can_canceled():
                 canceler.return_last_move(bar)
     
@@ -133,8 +133,9 @@ while True:
                 dragged_heap.return_prev_coords()
                 dragged_stack.push_heap(dragged_heap)
                 dragged_heap = None
-                dragged_stack = None          
+                dragged_stack = None
             
+    
 
     for stack in stacks:
         stack.show()

@@ -74,14 +74,13 @@ class Deck(Actions):
         self.cards.remove(card)
         if self.current_card_index == self.count():
             self.current_card_index += 1
-        else:
+        elif self.current_card_index != self.count() and self.current_card_index > 0:
             self.current_card_index -= 1
         return heap
 
     def push_heap(self, heap, cancel = False):
         if int(self.current_card_index or 0) + 1 > self.count() and cancel == False:
             self.current_card_index -= 1
-            print("FDFOFJFO")
         card = heap.cards[0]
         card.set_visible(True);
         card.x = self.x - config["card"]["width"] - config["stack"]["offset"]

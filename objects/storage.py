@@ -5,6 +5,9 @@ from objects.actions import *
 from objects.heap import *
 
 class Storage(Actions):
+
+    TOTAL_CARDS = 0
+
     def __init__(self, surface, x, y):
         super().__init__(surface, x, y)
         self.cards = []
@@ -62,3 +65,14 @@ class Storage(Actions):
         heap.cards[0].x = self.x
         heap.cards[0].y = self.y
         self.cards.append(heap.cards[0])
+        Storage.TOTAL_CARDS += 1
+        print("Updated %d" % Storage.TOTAL_CARDS)
+    
+    @staticmethod
+    def get_total_cards():
+        return Storage.TOTAL_CARDS
+    
+    @staticmethod
+    def is_game_completed():
+        if Storage.TOTAL_CARDS == 52:
+            print("WIIIIN")
