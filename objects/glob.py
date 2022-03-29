@@ -18,6 +18,7 @@ cards = []
 stacks = []
 storages = []
 deck = None
+game_loop = True
 dragged_heap = None
 dragged_stack = None
 time_started = time.time()

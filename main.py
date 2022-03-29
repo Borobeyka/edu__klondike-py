@@ -15,7 +15,7 @@ from objects.canceler import *
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
 clock = pygame.time.Clock()
-
+last_update = time.time()
 
 for i in range(4):
     for j in range(13):
@@ -48,6 +48,7 @@ canceler = Canceler()
 
 while True:
     window.fill(config["color"]["green"])
+
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
         x, y = pygame.mouse.get_pos()
@@ -56,86 +57,92 @@ while True:
             pygame.quit()
             sys.exit(0)
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z and canceler.is_can_canceled():
-                canceler.return_last_move(bar)
-    
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            for stack in stacks:
-                if stack.is_in_area(x, y) and not stack.is_empty():
-                    dragged_heap = stack.get_heap_on_focus(x, y)
-                    if dragged_heap != None:
-                        dragged_heap.save_old_coords()
-                        dragged_stack = stack
+        if game_loop:
 
-            for storage in storages:
-                if storage.is_in_area(x, y) and not storage.is_empty():
-                    dragged_heap = storage.get_heap_on_focus(x, y)
-                    if dragged_heap != None:
-                        dragged_heap.save_old_coords()
-                        dragged_stack = storage
-                    
-            if deck.is_in_area(x, y) and dragged_heap == None:
-                deck.pick_card()
-                canceler.reset()
-
-                # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
-                if deck.is_scrolled():
-                    bar.add_score(-20)
-
-            for idx, card in enumerate(deck.cards):
-                if card.is_in_area(x, y) and deck.current_card_index == idx:
-                    dragged_heap = deck.get_heap_on_focus(x, y)
-                    if dragged_heap != None:
-                        dragged_heap.save_old_coords()
-                        dragged_stack = deck
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z and canceler.is_can_canceled():
+                    canceler.return_last_move(bar)
         
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
-            for stack in stacks:
-                if stack.is_in_area(x, y):
-                    if stack.is_can_stack(dragged_heap):
-                        stack.push_heap(dragged_heap)
-                        if dragged_stack.count() > 0:
-                            dragged_stack.get_last_card().set_visible(True)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for stack in stacks:
+                    if stack.is_in_area(x, y) and not stack.is_empty():
+                        dragged_heap = stack.get_heap_on_focus(x, y)
+                        if dragged_heap != None:
+                            dragged_heap.save_old_coords()
+                            dragged_stack = stack
 
-                        # Открытие карты на столе +5
-                        if (isinstance(dragged_stack, Stack) and dragged_stack.count() != 0
-                            and dragged_stack != stack):
-                            bar.add_score(5)
-
-                        # Перетаскивание карты из колоды на стол +5
-                        if isinstance(dragged_stack, Deck):
-                            bar.add_score(5)
-
-                        # Перетаскивание карты из дома на стол -15
-                        if isinstance(dragged_stack, Storage):
-                            bar.add_score(-15)
+                for storage in storages:
+                    if storage.is_in_area(x, y) and not storage.is_empty():
+                        dragged_heap = storage.get_heap_on_focus(x, y)
+                        if dragged_heap != None:
+                            dragged_heap.save_old_coords()
+                            dragged_stack = storage
                         
-                        canceler.save_last_move(dragged_stack, stack, dragged_heap)
-                        dragged_heap = None
+                if deck.is_in_area(x, y) and dragged_heap == None:
+                    deck.pick_card()
+                    canceler.reset()
 
-            for storage in storages:
-                if storage.is_in_area(x, y):
-                    if storage.is_can_stack(dragged_heap):
-                        storage.push_heap(dragged_heap)
-                        if dragged_stack.count() > 0:
-                            dragged_stack.get_last_card().set_visible(True)
+                    # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
+                    if deck.is_scrolled():
+                        bar.add_score(-20)
 
-                        # Перетаскивание карты со стола или колоды в дом +10
-                        if isinstance(dragged_stack, Stack) or isinstance(dragged_stack, Deck):
-                            bar.add_score(10)
+                for idx, card in enumerate(deck.cards):
+                    if card.is_in_area(x, y) and deck.current_card_index == idx:
+                        dragged_heap = deck.get_heap_on_focus(x, y)
+                        if dragged_heap != None:
+                            dragged_heap.save_old_coords()
+                            dragged_stack = deck
 
-                        canceler.save_last_move(dragged_stack, storage, dragged_heap)
-                        dragged_heap = None
-
-            if dragged_heap != None:
-                dragged_heap.return_prev_coords()
-                dragged_stack.push_heap(dragged_heap)
-                dragged_heap = None
-                dragged_stack = None
             
-    
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
+                for stack in stacks:
+                    if stack.is_in_area(x, y):
+                        if stack.is_can_stack(dragged_heap):
+                            stack.push_heap(dragged_heap)
+                            if dragged_stack.count() > 0:
+                                dragged_stack.get_last_card().set_visible(True)
+
+                            # Открытие карты на столе +5
+                            if (isinstance(dragged_stack, Stack) and dragged_stack.count() != 0
+                                and dragged_stack != stack):
+                                bar.add_score(5)
+
+                            # Перетаскивание карты из колоды на стол +5
+                            if isinstance(dragged_stack, Deck):
+                                bar.add_score(5)
+
+                            # Перетаскивание карты из дома на стол -15
+                            if isinstance(dragged_stack, Storage):
+                                bar.add_score(-15)
+                            
+                            canceler.save_last_move(dragged_stack, stack, dragged_heap)
+                            dragged_heap = None
+
+                for storage in storages:
+                    if storage.is_in_area(x, y):
+                        if storage.is_can_stack(dragged_heap):
+                            storage.push_heap(dragged_heap)
+                            if dragged_stack.count() > 0:
+                                dragged_stack.get_last_card().set_visible(True)
+
+                            # Перетаскивание карты со стола или колоды в дом +10
+                            if isinstance(dragged_stack, Stack) or isinstance(dragged_stack, Deck):
+                                bar.add_score(10)
+
+                            canceler.save_last_move(dragged_stack, storage, dragged_heap)
+                            dragged_heap = None
+
+                if dragged_heap != None:
+                    dragged_heap.return_prev_coords()
+                    dragged_stack.push_heap(dragged_heap)
+                    dragged_heap = None
+                    dragged_stack = None
+        else:
+            if time.time() - last_update >= 0.5:
+                for storage in storages:
+                    storage.x = randint(0, config["app"]["width"] - config["card"]["width"] - 1)
+                    storage.y = randint(0, config["app"]["height"] - config["card"]["height"] - 1)
+                last_update = time.time()
 
     for stack in stacks:
         stack.show()
@@ -147,7 +154,9 @@ while True:
     if dragged_heap != None:
         dragged_heap.update_coords(x, y)
         dragged_heap.show()
-
+    
+    if Storage.is_game_completed():
+        game_loop = False
 
     clock.tick(config["app"]["fps"])
     pygame.display.update()

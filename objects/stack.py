@@ -42,14 +42,13 @@ class Stack(Actions):
     def is_can_stack(self, heap):
         if self.is_empty() and heap.cards[0].nominal != 12:
             return False
-        if self.count() >= 1 and (self.get_last_card().icon_color == heap.cards[0].icon_color or
+        if self.count() > 0 and (self.get_last_card().icon_color == heap.cards[0].icon_color or
             self.get_last_card().nominal - heap.cards[0].nominal != 1) and self.get_last_card().is_visible:
             return False
         return True
     
     def get_last_card(self):
         return self.cards[-1]
-
 
     def get_heap_on_focus(self, x, y):
         for card in self.cards[::-1]:
@@ -62,7 +61,6 @@ class Stack(Actions):
                 for idx, card in enumerate(self.cards):
                     if idx >= index:
                         heap.add_card(card)
-                #self.cards.remove(index)
                 del self.cards[index:]
                 return heap
         
