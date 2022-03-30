@@ -1,7 +1,6 @@
 # Klondike PyGame
 Управление - мышь, отменить последний ход - клавиша Z
 
-### Правила начисления очков:
 ![](https://github.com/Borobeyka/klondike-py/blob/master/scores.jpg)
 
 ### Геймплей:
