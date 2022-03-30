@@ -25,6 +25,8 @@ class Canceler:
             bar.add_score(-10)
         if isinstance(self.stack, Deck) and isinstance(self.d_stack, Stack):
             bar.add_score(15)
+        if isinstance(self.d_stack, Storage):
+            Storage.TOTAL_CARDS -= 1
 
         if isinstance(self.stack, Deck):
             self.stack.push_heap(self.heap, True)

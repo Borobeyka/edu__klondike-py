@@ -88,7 +88,7 @@ class Deck(Actions):
         self.cards.insert(self.current_card_index, card)
 
     def is_scrolled(self):
-        if self.current_card_index == None:
+        if self.current_card_index == None and self.count() != 0:
             return True
         else:
             return False

@@ -137,12 +137,6 @@ while True:
                     dragged_stack.push_heap(dragged_heap)
                     dragged_heap = None
                     dragged_stack = None
-        else:
-            if time.time() - last_update >= 0.5:
-                for storage in storages:
-                    storage.x = randint(0, config["app"]["width"] - config["card"]["width"] - 1)
-                    storage.y = randint(0, config["app"]["height"] - config["card"]["height"] - 1)
-                last_update = time.time()
 
     for stack in stacks:
         stack.show()
@@ -156,6 +150,9 @@ while True:
         dragged_heap.show()
     
     if Storage.is_game_completed():
+        text = card_nominal.render("Game completed", True, config["color"]["darkgreen"])
+        text_rect = text.get_rect(center=(config["app"]["width"] / 2, config["app"]["height"] / 2))
+        window.blit(text, text_rect)
         game_loop = False
 
     clock.tick(config["app"]["fps"])
