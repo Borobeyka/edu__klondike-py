@@ -60,7 +60,6 @@ class Storage(Actions):
         heap.add_card(card)
         self.cards.remove(card)
         Storage.TOTAL_CARDS -= 1
-        print(Storage.TOTAL_CARDS) ##############
         return heap
 
     def push_heap(self, heap):
@@ -68,7 +67,6 @@ class Storage(Actions):
         heap.cards[0].y = self.y
         self.cards.append(heap.cards[0])
         Storage.TOTAL_CARDS += 1
-        print(Storage.TOTAL_CARDS)
     
     @staticmethod
     def is_game_completed():

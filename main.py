@@ -15,7 +15,6 @@ from objects.canceler import *
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
 clock = pygame.time.Clock()
-last_update = time.time()
 
 for i in range(4):
     for j in range(13):
