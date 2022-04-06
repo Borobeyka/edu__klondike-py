@@ -69,6 +69,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = stack
+                        sounds.get("stack_take").play()
 
                 for storage in storages:
                     if storage.is_in_area(x, y) and not storage.is_empty():
@@ -76,6 +77,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = storage
+                        sounds.get("stack_take").play()
                         
                 if deck.is_in_area(x, y) and dragged_heap == None:
                     deck.pick_card()
@@ -84,6 +86,7 @@ while True:
                     # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
                     if deck.is_scrolled():
                         bar.add_score(-20)
+                    sounds.get("deck_open").play()
 
                 for idx, card in enumerate(deck.cards):
                     if card.is_in_area(x, y) and deck.current_card_index == idx:
@@ -91,6 +94,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = deck
+                        sounds.get("stack_take").play()
 
             
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
@@ -105,6 +109,7 @@ while True:
                             if (isinstance(dragged_stack, Stack) and dragged_stack.count() != 0
                                 and dragged_stack != stack):
                                 bar.add_score(5)
+                                sounds.get("stack_card_open").play()
 
                             # Перетаскивание карты из колоды на стол +5
                             if isinstance(dragged_stack, Deck):
@@ -115,6 +120,7 @@ while True:
                                 bar.add_score(-15)
                             
                             canceler.save_last_move(dragged_stack, stack, dragged_heap)
+                            sounds.get("stack_release").play()
                             dragged_heap = None
 
                 for storage in storages:
@@ -129,6 +135,8 @@ while True:
                                 bar.add_score(10)
 
                             canceler.save_last_move(dragged_stack, storage, dragged_heap)
+                            sounds.get("stack_release").play()
+                            sounds.get("storage").play()
                             dragged_heap = None
 
                 if dragged_heap != None:
@@ -136,6 +144,7 @@ while True:
                     dragged_stack.push_heap(dragged_heap)
                     dragged_heap = None
                     dragged_stack = None
+                    sounds.get("stack_release").play()
 
     for stack in stacks:
         stack.show()
