@@ -22,6 +22,7 @@ cards_icon = {
     "spade": pygame.image.load("./assets/icons/spade.png"),
 }
 sounds = {
+    "background_music": pygame.mixer.music.load("./assets/sounds/background_music.mp3"),
     "deck_open": load_sound("./assets/sounds/deck_open.wav"),
     "stack_card_open": load_sound("./assets/sounds/stack_card_open.wav"),
     "stack_release": load_sound("./assets/sounds/stack_release.wav"),

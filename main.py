@@ -16,6 +16,10 @@ pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
 clock = pygame.time.Clock()
 
+sounds.get("background_music")
+pygame.mixer.music.set_volume(config["app"]["volume"] / 2)
+pygame.mixer.music.play(-1)
+
 for i in range(4):
     for j in range(13):
         cards.append(Card(window, 0, 0, config["suits"][i], j))
