@@ -4,9 +4,10 @@ from objects.glob import *
 
 class Bar:
 
-    def __init__(self, surface):
+    def __init__(self, surface, record):
         self.surface = surface
         self.score = 0
+        self.record = record
     
     def show(self):
         if game_loop:
@@ -14,6 +15,10 @@ class Bar:
             surface.set_alpha(160)
             pygame.draw.rect(surface, config["color"]["black"],
                 (0, 0, config["app"]["width"], config["bar"]["height"]))
+
+            text = card_nominal.render("Record: %d" % self.record, True, config["color"]["white"])
+            text_rect = text.get_rect(center=(surface.get_rect()[2] / 5, config["bar"]["height"] / 2))
+            surface.blit(text, text_rect)
 
             text = card_nominal.render("Score: %d" % self.score, True, config["color"]["white"])
             text_rect = text.get_rect(center=(surface.get_rect()[2] / 2, config["bar"]["height"] / 2))
@@ -32,3 +37,6 @@ class Bar:
             self.score = 0
         else:
             self.score += score
+    
+    def get_score(self):
+        return self.score

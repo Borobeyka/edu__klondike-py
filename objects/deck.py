@@ -49,6 +49,9 @@ class Deck(Actions):
 
     def count(self):
         return len(self.cards)
+
+    def is_empty(self):
+        return False if self.count() > 0 else True
     
     def pick_card(self):
         if self.current_card_index == None:

@@ -14,7 +14,11 @@ class Canceler:
         self.is_can_cancel = True
 
     def return_last_move(self, bar):
-        if(isinstance(self.stack, Stack) and self.stack.count() != 0):
+        if (isinstance(self.stack, Stack) and self.stack.count() != 0):
+            self.stack.get_last_card().set_visible(False)
+        
+        if (isinstance(self.stack, Stack) and isinstance(self.d_stack, Storage) and
+            self.stack.count() != 0):
             self.stack.get_last_card().set_visible(False)
         
         if isinstance(self.stack, Stack) and self.stack.count() > 0 and isinstance(self.d_stack, Stack):

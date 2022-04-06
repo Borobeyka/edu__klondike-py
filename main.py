@@ -11,6 +11,7 @@ from objects.storage import *
 from objects.deck import *
 from objects.bar import *
 from objects.canceler import *
+from objects.record import *
 
 pygame.init()
 pygame.display.set_caption("Klondike v%s" % config["app"]["version"])
@@ -46,7 +47,8 @@ for i in range(len(cards)):
     deck.add_card(card)
     cards.remove(card)
 
-bar = Bar(window)
+record = Record("./records.txt")
+bar = Bar(window, record.load())
 canceler = Canceler()
 
 while True:
@@ -73,7 +75,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = stack
-                        sounds.get("stack_take").play()
+                            sounds.get("stack_take").play()
 
                 for storage in storages:
                     if storage.is_in_area(x, y) and not storage.is_empty():
@@ -81,7 +83,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = storage
-                        sounds.get("stack_take").play()
+                            sounds.get("stack_take").play()
                         
                 if deck.is_in_area(x, y) and dragged_heap == None:
                     deck.pick_card()
@@ -90,7 +92,8 @@ while True:
                     # Прокрутка колоды -20, при этом счет уменьшается только до 0 очков
                     if deck.is_scrolled():
                         bar.add_score(-20)
-                    sounds.get("deck_open").play()
+                    if not deck.is_empty():
+                        sounds.get("deck_open").play()
 
                 for idx, card in enumerate(deck.cards):
                     if card.is_in_area(x, y) and deck.current_card_index == idx:
@@ -98,7 +101,7 @@ while True:
                         if dragged_heap != None:
                             dragged_heap.save_old_coords()
                             dragged_stack = deck
-                        sounds.get("stack_take").play()
+                            sounds.get("stack_take").play()
 
             
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragged_heap != None:
@@ -165,6 +168,11 @@ while True:
         text = card_nominal.render("Game completed", True, config["color"]["darkgreen"])
         text_rect = text.get_rect(center=(config["app"]["width"] / 2, config["app"]["height"] / 2))
         window.blit(text, text_rect)
+
+        if bar.get_score() > record.load():
+            record.write(bar.get_score())
+            bar.record = bar.get_score()
+            print("ВЫ ПОБИЛИ РЕКОРД ОЧКОВ ЗА ВСЕ ВРЕМЯ")
         game_loop = False
 
     clock.tick(config["app"]["fps"])

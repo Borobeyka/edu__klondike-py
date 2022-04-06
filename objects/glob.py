@@ -5,7 +5,6 @@ import json
 with open("config.json", encoding="utf-8") as file:
     config = json.loads(file.read())
 
-
 def load_sound(path):
     sound = pygame.mixer.Sound(path)
     sound.set_volume(config["app"]["volume"])
